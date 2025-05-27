@@ -54,6 +54,22 @@ public class Staff extends Person {
 	public void setMentorId(Long mentorId) {
 		this.mentorId = mentorId;
 	}
+
+	public Long getSalary() {
+		return salary;
+	}
+
+	public void setSalary(Long salary) {
+		this.salary = salary;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
 }
 
 
