@@ -23,7 +23,6 @@ public class AuditListener {
     }
 
     private String getCurrentUser() {
-        // You can later hook this into Spring Security
         return "system"; 
     }
 }

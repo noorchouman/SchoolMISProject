@@ -12,7 +12,6 @@ public class Audit {
     private String modifiedBy;
     private LocalDateTime modifiedDate;
 
-    // Getters and Setters
 
     public String getCreatedBy() {
         return createdBy;
