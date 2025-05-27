@@ -64,4 +64,12 @@ public class Student extends Person {
     public void setRegistrations(List<Registration> registrations) {
         this.registrations = registrations;
     }
+
+	public String getClassroomId() {
+		return classroomId;
+	}
+
+	public void setClassroomId(String classroomId) {
+		this.classroomId = classroomId;
+	}
 }
