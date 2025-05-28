@@ -1,8 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.Parent;
-import com.example.demo.repository.ParentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.service.ParentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,39 +11,56 @@ import java.util.List;
 @RequestMapping("/parents")
 public class ParentController {
 
-    @Autowired
-    private ParentRepository parentRepository;
+    private final ParentService parentService;
+
+    public ParentController(ParentService parentService) {
+        this.parentService = parentService;
+    }
 
     @GetMapping
-    public List<Parent> getAll() {
-        return parentRepository.findAll();
+    public List<Parent> getAllParents() {
+        return parentService.getAllParents();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Parent> getById(@PathVariable Long id) {
-        return parentRepository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Parent> getParentById(@PathVariable Long id) {
+        Parent parent = parentService.getParentById(id);
+        if (parent != null) {
+            return ResponseEntity.ok(parent);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping
-    public Parent create(@RequestBody Parent parent) {
-        return parentRepository.save(parent);
+    public ResponseEntity<Parent> createParent(@RequestBody Parent parent) {
+        Parent created = parentService.saveParent(parent);
+        return ResponseEntity.status(201).body(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Parent> update(@PathVariable Long id, @RequestBody Parent updated) {
-        return parentRepository.findById(id).map(parent -> {
-            parent.setName(updated.getName());
-            parent.setAddress(updated.getAddress());
-            parent.setPhoneNumber(updated.getPhoneNumber());
-            parent.setChildren(updated.getChildren());
-            return ResponseEntity.ok(parentRepository.save(parent));
-        }).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Parent> updateParent(@PathVariable Long id, @RequestBody Parent parent) {
+        Parent updated = parentService.updateParent(id, parent);
+        if (updated != null) {
+            return ResponseEntity.ok(updated);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        parentRepository.deleteById(id);
+    public ResponseEntity<Void> deleteParent(@PathVariable Long id) {
+        parentService.deleteParent(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/phone/{phoneNumber}")
+    public List<Parent> getByPhoneNumber(@PathVariable String phoneNumber) {
+        return parentService.findByPhoneNumber(phoneNumber);
+    }
+
+    @GetMapping("/search")
+    public List<Parent> searchByName(@RequestParam String name) {
+        return parentService.searchByName(name);
     }
 }
