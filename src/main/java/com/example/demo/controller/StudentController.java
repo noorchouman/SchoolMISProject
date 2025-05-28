@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.Student;
-import com.example.demo.repository.StudentRepository;
+import com.example.demo.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,42 +12,49 @@ import java.util.List;
 @RequestMapping("/students")
 public class StudentController {
 
+    private final StudentService studentService;
+
     @Autowired
-    private StudentRepository studentRepository;
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
+    }
 
     @GetMapping
-    public List<Student> getAll() {
-        return studentRepository.findAll();
+    public List<Student> getAllStudents() {
+        return studentService.getAllStudents();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Student> getById(@PathVariable Long id) {
-        return studentRepository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Student> getStudentById(@PathVariable Long id) {
+        Student student = studentService.getStudentById(id);
+        if (student != null) {
+            return ResponseEntity.ok(student);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping
-    public Student create(@RequestBody Student student) {
-        return studentRepository.save(student);
+    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
+        Student created = studentService.saveStudent(student);
+        return ResponseEntity.status(201).body(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Student> update(@PathVariable Long id, @RequestBody Student updated) {
-        return studentRepository.findById(id).map(student -> {
-            student.setName(updated.getName());
-            student.setAddress(updated.getAddress());
-            student.setClassroomId(updated.getClassroomId());
-            student.setGradeLevel(updated.getGradeLevel());
-            student.setClubs(updated.getClubs());
-            student.setParents(updated.getParents());
-            student.setResults(updated.getResults());
-            return ResponseEntity.ok(studentRepository.save(student));
-        }).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Student> updateStudent(@PathVariable Long id, @RequestBody Student student) {
+        Student updated = studentService.updateStudent(id, student);
+        if (updated != null) {
+            return ResponseEntity.ok(updated);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        studentRepository.deleteById(id);
+    public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
+        studentService.deleteStudent(id);
+        return ResponseEntity.noContent().build();
     }
+
+    
 }
