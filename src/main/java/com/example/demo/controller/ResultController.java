@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.Result;
-import com.example.demo.repository.ResultRepository;
+import com.example.demo.service.ResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,33 +12,30 @@ import java.util.List;
 public class ResultController {
 
     @Autowired
-    private ResultRepository resultRepository;
+    private ResultService resultService;
+
     @GetMapping
     public List<Result> getAllResults() {
-        return resultRepository.findAll();
+        return resultService.getAllResults();
     }
+
     @GetMapping("/{id}")
     public Result getResultById(@PathVariable Long id) {
-        return resultRepository.findById(id).orElse(null);
+        return resultService.getResultById(id);
     }
+
     @PostMapping
     public Result createResult(@RequestBody Result result) {
-        return resultRepository.save(result);
+        return resultService.saveResult(result);
     }
+
     @PutMapping("/{id}")
     public Result updateResult(@PathVariable Long id, @RequestBody Result updatedResult) {
-        Result result = resultRepository.findById(id).orElse(null);
-        if (result != null) {
-            result.setScore(updatedResult.getScore());
-            result.setGradeLetter(updatedResult.getGradeLetter());
-            result.setStudent(updatedResult.getStudent());
-            result.setExam(updatedResult.getExam());
-            return resultRepository.save(result);
-        }
-        return null;
+        return resultService.updateResult(id, updatedResult);
     }
+
     @DeleteMapping("/{id}")
     public void deleteResult(@PathVariable Long id) {
-        resultRepository.deleteById(id);
+        resultService.deleteResult(id);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.demo.controller;
+
 import com.example.demo.Club;
-import com.example.demo.repository.ClubRepository;
+import com.example.demo.service.ClubService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,29 +12,25 @@ import java.util.List;
 public class ClubController {
 
     @Autowired
-    private ClubRepository clubRepository;
+    private ClubService clubService;
+    @PostMapping
+    public Club createClub(@RequestBody Club club) {
+        return clubService.saveClub(club);
+    }
     @GetMapping
     public List<Club> getAllClubs() {
-        return clubRepository.findAll();
+        return clubService.getAllClubs();
     }
     @GetMapping("/{id}")
     public Club getClubById(@PathVariable Long id) {
-        return clubRepository.findById(id).orElse(null);
-    }
-    @PostMapping
-    public Club createClub(@RequestBody Club club) {
-        return clubRepository.save(club);
+        return clubService.getClubById(id);
     }
     @PutMapping("/{id}")
-    public Club updateClub(@PathVariable Long id, @RequestBody Club updatedClub) {
-        return clubRepository.findById(id).map(club -> {
-            club.setName(updatedClub.getName());
-            club.setMembers(updatedClub.getMembers()); // if updating members too
-            return clubRepository.save(club);
-        }).orElse(null);
+    public Club updateClub(@PathVariable Long id, @RequestBody Club club) {
+        return clubService.updateClub(id, club);
     }
     @DeleteMapping("/{id}")
     public void deleteClub(@PathVariable Long id) {
-        clubRepository.deleteById(id);
+        clubService.deleteClub(id);
     }
 }

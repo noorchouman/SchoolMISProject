@@ -1,6 +1,7 @@
 package com.example.demo.controller;
+
 import com.example.demo.Exam;
-import com.example.demo.repository.ExamRepository;
+import com.example.demo.service.ExamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,33 +12,30 @@ import java.util.List;
 public class ExamController {
 
     @Autowired
-    private ExamRepository examRepository;
-    @GetMapping
-    public List<Exam> getAllExams() {
-        return examRepository.findAll();
-    }
-    @GetMapping("/{id}")
-    public Exam getExamById(@PathVariable Long id) {
-        return examRepository.findById(id).orElse(null);
-    }
+    private ExamService examService;
+
     @PostMapping
     public Exam createExam(@RequestBody Exam exam) {
-        return examRepository.save(exam);
+        return examService.saveExam(exam);
     }
+
+    @GetMapping
+    public List<Exam> getAllExams() {
+        return examService.getAllExams();
+    }
+
+    @GetMapping("/{id}")
+    public Exam getExamById(@PathVariable Long id) {
+        return examService.getExamById(id);
+    }
+
     @PutMapping("/{id}")
-    public Exam updateExam(@PathVariable Long id, @RequestBody Exam updatedExam) {
-        Exam exam = examRepository.findById(id).orElse(null);
-        if (exam != null) {
-            exam.setCourseName(updatedExam.getCourseName());
-            exam.setCreatedAt(updatedExam.getCreatedAt());
-            exam.setCreatedBy(updatedExam.getCreatedBy());
-            exam.setDepartment(updatedExam.getDepartment());
-            return examRepository.save(exam);
-        }
-        return null;
+    public Exam updateExam(@PathVariable Long id, @RequestBody Exam exam) {
+        return examService.updateExam(id, exam);
     }
+
     @DeleteMapping("/{id}")
     public void deleteExam(@PathVariable Long id) {
-        examRepository.deleteById(id);
+        examService.deleteExam(id);
     }
 }

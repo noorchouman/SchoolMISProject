@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.GradeLevel;
-import com.example.demo.repository.GradeLevelRepository;
+import com.example.demo.service.GradeLevelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,31 +12,26 @@ import java.util.List;
 public class GradeLevelController {
 
     @Autowired
-    private GradeLevelRepository gradeLevelRepository;
+    private GradeLevelService gradeLevelService;
+
     @GetMapping
     public List<GradeLevel> getAllGradeLevels() {
-        return gradeLevelRepository.findAll();
+        return gradeLevelService.getAllGradeLevels();
     }
     @GetMapping("/{id}")
     public GradeLevel getGradeLevelById(@PathVariable Long id) {
-        return gradeLevelRepository.findById(id).orElse(null);
+        return gradeLevelService.getGradeLevelById(id);
     }
     @PostMapping
     public GradeLevel createGradeLevel(@RequestBody GradeLevel gradeLevel) {
-        return gradeLevelRepository.save(gradeLevel);
+        return gradeLevelService.saveGradeLevel(gradeLevel);
     }
     @PutMapping("/{id}")
-    public GradeLevel updateGradeLevel(@PathVariable Long id, @RequestBody GradeLevel updatedGradeLevel) {
-        GradeLevel gradeLevel = gradeLevelRepository.findById(id).orElse(null);
-        if (gradeLevel != null) {
-            gradeLevel.setLevel(updatedGradeLevel.getLevel());
-            gradeLevel.setName(updatedGradeLevel.getName());
-            return gradeLevelRepository.save(gradeLevel);
-        }
-        return null;
+    public GradeLevel updateGradeLevel(@PathVariable Long id, @RequestBody GradeLevel gradeLevel) {
+        return gradeLevelService.updateGradeLevel(id, gradeLevel);
     }
     @DeleteMapping("/{id}")
     public void deleteGradeLevel(@PathVariable Long id) {
-        gradeLevelRepository.deleteById(id);
+        gradeLevelService.deleteGradeLevel(id);
     }
 }
