@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Course {
@@ -19,8 +20,40 @@ public class Course {
     private LocalDateTime lastModifiedAt;
     private String lastModifiedBy;
 
+    
     @ManyToOne
-    private Department department;
+    private Teacher teacher;
+    
+    @OneToMany(mappedBy = "course")
+    private List<Exam> exams;
+
+    @ManyToOne
+    private GradeLevel gradeLevel;
+
+
+	public Teacher getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
+	}
+
+	public List<Exam> getExams() {
+		return exams;
+	}
+
+	public void setExams(List<Exam> exams) {
+		this.exams = exams;
+	}
+
+	public GradeLevel getGradeLevel() {
+		return gradeLevel;
+	}
+
+	public void setGradeLevel(GradeLevel gradeLevel) {
+		this.gradeLevel = gradeLevel;
+	}
 
 	public Long getId() {
 		return id;
@@ -70,12 +103,6 @@ public class Course {
 		this.lastModifiedBy = lastModifiedBy;
 	}
 
-	public Department getDepartment() {
-		return department;
-	}
-
-	public void setDepartment(Department department) {
-		this.department = department;
-	}
+	
     
 }

@@ -17,7 +17,38 @@ public class Exam {
 
     
     @ManyToOne
-    private Department department;
+    private Course course;
+    
+    @ManyToOne
+    private Teacher teacher;
+    
+    @OneToOne(mappedBy = "exam")
+    private Result result;
+
+
+	public Teacher getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
+	}
+
+	public Result getResult() {
+		return result;
+	}
+
+	public void setResult(Result result) {
+		this.result = result;
+	}
+
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
+	}
 
 	public Long getId() {
 		return id;
@@ -52,11 +83,5 @@ public class Exam {
 	}
 
 	
-	public Department getDepartment() {
-		return department;
-	}
-
-	public void setDepartment(Department department) {
-		this.department = department;
-	}
+	
 }

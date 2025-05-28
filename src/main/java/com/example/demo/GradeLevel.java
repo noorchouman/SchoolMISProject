@@ -13,6 +13,30 @@ public class GradeLevel {
 
     @OneToMany(mappedBy = "gradeLevel")
     private Set<Student> students;
+    
+    @OneToOne(mappedBy = "gradeLevel")
+    private Registration registration;
+    
+    @OneToMany(mappedBy = "gradeLevel")
+    private Set<Course> courses;
+
+    
+
+	public Registration getRegistration() {
+		return registration;
+	}
+
+	public void setRegistration(Registration registration) {
+		this.registration = registration;
+	}
+
+	public Set<Course> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(Set<Course> courses) {
+		this.courses = courses;
+	}
 
 	public Long getId() {
 		return id;
