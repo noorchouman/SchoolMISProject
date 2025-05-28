@@ -5,8 +5,6 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
 @Entity
 public class Course {
 	@Id
@@ -23,4 +21,61 @@ public class Course {
 
     @ManyToOne
     private Department department;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getCourseName() {
+		return courseName;
+	}
+
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public LocalDateTime getLastModifiedAt() {
+		return lastModifiedAt;
+	}
+
+	public void setLastModifiedAt(LocalDateTime lastModifiedAt) {
+		this.lastModifiedAt = lastModifiedAt;
+	}
+
+	public String getLastModifiedBy() {
+		return lastModifiedBy;
+	}
+
+	public void setLastModifiedBy(String lastModifiedBy) {
+		this.lastModifiedBy = lastModifiedBy;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+    
 }

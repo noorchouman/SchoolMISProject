@@ -1,12 +1,9 @@
 package com.example.demo;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
 @Entity
 public class Exam {
 	@Id
@@ -18,9 +15,48 @@ public class Exam {
     private LocalDateTime createdAt;
     private String createdBy;
 
-    private LocalDateTime lastModifiedAt;
-    private String lastModifiedBy;
-
+    
     @ManyToOne
     private Department department;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getCourseName() {
+		return courseName;
+	}
+
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
 }
