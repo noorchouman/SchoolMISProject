@@ -30,12 +30,15 @@ public class DepartmentService {
     }
 
     public Department updateDepartment(Long id, Department department) {
-        if (!departmentRepository.existsById(id)) {
-            return null;
-        }
-        department.setId(id);
-        return departmentRepository.save(department);
+        Optional<Department> deptOpt = departmentRepository.findById(id);
+        if (deptOpt.isEmpty()) return null;
+        Department dept = deptOpt.get();
+        dept.setName(department.getName());
+        dept.setStaffs(department.getStaffs());
+        dept.setHead(department.getHead());
+        return departmentRepository.save(dept);
     }
+
 
     public void deleteDepartment(Long id) {
         departmentRepository.deleteById(id);

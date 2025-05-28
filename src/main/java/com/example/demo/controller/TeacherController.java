@@ -2,8 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.Teacher;
 import com.example.demo.service.TeacherService;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,13 +11,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/teachers")
 public class TeacherController {
+	
+	@Autowired
+    private TeacherService teacherService;
 
-    private final TeacherService teacherService;
-
-    @Autowired
-    public TeacherController(TeacherService teacherService) {
-        this.teacherService = teacherService;
-    }
 
     @GetMapping
     public List<Teacher> getAllTeachers() {
@@ -25,35 +22,8 @@ public class TeacherController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Teacher> getTeacherById(@PathVariable Long id) {
-        Teacher teacher = teacherService.getTeacherById(id);
-        if (teacher != null) {
-            return ResponseEntity.ok(teacher);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @PostMapping
-    public ResponseEntity<Teacher> createTeacher(@RequestBody Teacher teacher) {
-        Teacher created = teacherService.saveTeacher(teacher);
-        return ResponseEntity.status(201).body(created);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Teacher> updateTeacher(@PathVariable Long id, @RequestBody Teacher teacher) {
-        Teacher updated = teacherService.updateTeacher(id, teacher);
-        if (updated != null) {
-            return ResponseEntity.ok(updated);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTeacher(@PathVariable Long id) {
-        teacherService.deleteTeacher(id);
-        return ResponseEntity.noContent().build();
+    public Teacher getTeacherById(@PathVariable Long id) {
+        return teacherService.getTeacherById(id);
     }
 
     @GetMapping("/subject/{subject}")
@@ -64,5 +34,20 @@ public class TeacherController {
     @GetMapping("/search")
     public List<Teacher> searchByName(@RequestParam String name) {
         return teacherService.searchByName(name);
+    }
+
+    @PostMapping
+    public Teacher createTeacher(@RequestBody Teacher teacher) {
+        return teacherService.saveTeacher(teacher);
+    }
+
+    @PutMapping("/{id}")
+    public Teacher updateTeacher(@PathVariable Long id, @RequestBody Teacher teacher) {
+        return teacherService.updateTeacher(id, teacher);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteTeacher(@PathVariable Long id) {
+        teacherService.deleteTeacher(id);
     }
 }
