@@ -2,7 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.Registration;
 import com.example.demo.service.RegistrationService;
-import org.springframework.http.ResponseEntity;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,12 +11,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/registrations")
 public class RegistrationController {
-
-    private final RegistrationService registrationService;
-
-    public RegistrationController(RegistrationService registrationService) {
-        this.registrationService = registrationService;
-    }
+	
+	@Autowired
+    private RegistrationService registrationService;
 
     @GetMapping
     public List<Registration> getAllRegistrations() {
@@ -23,35 +21,8 @@ public class RegistrationController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Registration> getRegistrationById(@PathVariable Long id) {
-        Registration registration = registrationService.getRegistrationById(id);
-        if (registration != null) {
-            return ResponseEntity.ok(registration);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @PostMapping
-    public ResponseEntity<Registration> createRegistration(@RequestBody Registration registration) {
-        Registration created = registrationService.saveRegistration(registration);
-        return ResponseEntity.status(201).body(created);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Registration> updateRegistration(@PathVariable Long id, @RequestBody Registration registration) {
-        Registration updated = registrationService.updateRegistration(id, registration);
-        if (updated != null) {
-            return ResponseEntity.ok(updated);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRegistration(@PathVariable Long id) {
-        registrationService.deleteRegistration(id);
-        return ResponseEntity.noContent().build();
+    public Registration getRegistrationById(@PathVariable Long id) {
+        return registrationService.getRegistrationById(id);
     }
 
     @GetMapping("/student/{studentId}")
@@ -67,5 +38,20 @@ public class RegistrationController {
     @GetMapping("/staff/{staffId}")
     public List<Registration> getByStaffId(@PathVariable Long staffId) {
         return registrationService.findByStaffId(staffId);
+    }
+
+    @PostMapping
+    public Registration createRegistration(@RequestBody Registration registration) {
+        return registrationService.saveRegistration(registration);
+    }
+
+    @PutMapping("/{id}")
+    public Registration updateRegistration(@PathVariable Long id, @RequestBody Registration registration) {
+        return registrationService.updateRegistration(id, registration);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteRegistration(@PathVariable Long id) {
+        registrationService.deleteRegistration(id);
     }
 }

@@ -2,8 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.Student;
 import com.example.demo.service.StudentService;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,13 +11,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/students")
 public class StudentController {
-
-    private final StudentService studentService;
-
-    @Autowired
-    public StudentController(StudentService studentService) {
-        this.studentService = studentService;
-    }
+	
+	@Autowired
+    private StudentService studentService;
 
     @GetMapping
     public List<Student> getAllStudents() {
@@ -25,36 +21,37 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Student> getStudentById(@PathVariable Long id) {
-        Student student = studentService.getStudentById(id);
-        if (student != null) {
-            return ResponseEntity.ok(student);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public Student getStudentById(@PathVariable Long id) {
+        return studentService.getStudentById(id);
+    }
+
+    @GetMapping("/search")
+    public List<Student> searchByName(@RequestParam String name) {
+        return studentService.searchByName(name);
+    }
+
+    @GetMapping("/classroom/{classroomId}")
+    public List<Student> getStudentsByClassroom(@PathVariable String classroomId) {
+        return studentService.findByClassroomId(classroomId);
+    }
+
+    @GetMapping("/grade-level/{gradeLevelId}")
+    public List<Student> getStudentsByGradeLevel(@PathVariable Long gradeLevelId) {
+        return studentService.findByGradeLevelId(gradeLevelId);
     }
 
     @PostMapping
-    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
-        Student created = studentService.saveStudent(student);
-        return ResponseEntity.status(201).body(created);
+    public Student createStudent(@RequestBody Student student) {
+        return studentService.saveStudent(student);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Student> updateStudent(@PathVariable Long id, @RequestBody Student student) {
-        Student updated = studentService.updateStudent(id, student);
-        if (updated != null) {
-            return ResponseEntity.ok(updated);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public Student updateStudent(@PathVariable Long id, @RequestBody Student student) {
+        return studentService.updateStudent(id, student);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
+    public void deleteStudent(@PathVariable Long id) {
         studentService.deleteStudent(id);
-        return ResponseEntity.noContent().build();
     }
-
-    
 }

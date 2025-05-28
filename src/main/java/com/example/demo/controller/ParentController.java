@@ -2,7 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.Parent;
 import com.example.demo.service.ParentService;
-import org.springframework.http.ResponseEntity;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,12 +11,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/parents")
 public class ParentController {
+	
+	@Autowired
+    private ParentService parentService;
 
-    private final ParentService parentService;
-
-    public ParentController(ParentService parentService) {
-        this.parentService = parentService;
-    }
 
     @GetMapping
     public List<Parent> getAllParents() {
@@ -23,35 +22,8 @@ public class ParentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Parent> getParentById(@PathVariable Long id) {
-        Parent parent = parentService.getParentById(id);
-        if (parent != null) {
-            return ResponseEntity.ok(parent);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @PostMapping
-    public ResponseEntity<Parent> createParent(@RequestBody Parent parent) {
-        Parent created = parentService.saveParent(parent);
-        return ResponseEntity.status(201).body(created);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Parent> updateParent(@PathVariable Long id, @RequestBody Parent parent) {
-        Parent updated = parentService.updateParent(id, parent);
-        if (updated != null) {
-            return ResponseEntity.ok(updated);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteParent(@PathVariable Long id) {
-        parentService.deleteParent(id);
-        return ResponseEntity.noContent().build();
+    public Parent getParentById(@PathVariable Long id) {
+        return parentService.getParentById(id);
     }
 
     @GetMapping("/phone/{phoneNumber}")
@@ -62,5 +34,20 @@ public class ParentController {
     @GetMapping("/search")
     public List<Parent> searchByName(@RequestParam String name) {
         return parentService.searchByName(name);
+    }
+
+    @PostMapping
+    public Parent createParent(@RequestBody Parent parent) {
+        return parentService.saveParent(parent);
+    }
+
+    @PutMapping("/{id}")
+    public Parent updateParent(@PathVariable Long id, @RequestBody Parent parent) {
+        return parentService.updateParent(id, parent);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteParent(@PathVariable Long id) {
+        parentService.deleteParent(id);
     }
 }

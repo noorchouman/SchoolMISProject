@@ -2,8 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.Staff;
 import com.example.demo.service.StaffService;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,12 +11,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/staff")
 public class StaffController {
+	
+	@Autowired
+    private StaffService staffService;
 
-    private final StaffService staffService;
-
-    public StaffController(StaffService staffService) {
-        this.staffService = staffService;
-    }
 
     @GetMapping
     public List<Staff> getAllStaff() {
@@ -24,35 +22,8 @@ public class StaffController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Staff> getStaffById(@PathVariable Long id) {
-        Staff staff = staffService.getStaffById(id);
-        if (staff != null) {
-            return ResponseEntity.ok(staff);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @PostMapping
-    public ResponseEntity<Staff> createStaff(@RequestBody Staff staff) {
-        Staff created = staffService.saveStaff(staff);
-        return ResponseEntity.status(201).body(created);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Staff> updateStaff(@PathVariable Long id, @RequestBody Staff staff) {
-        Staff updated = staffService.updateStaff(id, staff);
-        if (updated != null) {
-            return ResponseEntity.ok(updated);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStaff(@PathVariable Long id) {
-        staffService.deleteStaff(id);
-        return ResponseEntity.noContent().build();
+    public Staff getStaffById(@PathVariable Long id) {
+        return staffService.getStaffById(id);
     }
 
     @GetMapping("/role/{role}")
@@ -68,5 +39,20 @@ public class StaffController {
     @GetMapping("/search")
     public List<Staff> searchByName(@RequestParam String name) {
         return staffService.searchByName(name);
+    }
+
+    @PostMapping
+    public Staff createStaff(@RequestBody Staff staff) {
+        return staffService.saveStaff(staff);
+    }
+
+    @PutMapping("/{id}")
+    public Staff updateStaff(@PathVariable Long id, @RequestBody Staff staff) {
+        return staffService.updateStaff(id, staff);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteStaff(@PathVariable Long id) {
+        staffService.deleteStaff(id);
     }
 }
