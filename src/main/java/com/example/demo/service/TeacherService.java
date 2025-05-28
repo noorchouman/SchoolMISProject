@@ -21,8 +21,7 @@ public class TeacherService {
     }
 
     public Teacher getTeacherById(Long id) {
-        Optional<Teacher> teacher = teacherRepository.findById(id);
-        return teacher.orElse(null);
+        return teacherRepository.findById(id).orElse(null);
     }
 
     public Teacher saveTeacher(Teacher teacher) {
@@ -42,6 +41,8 @@ public class TeacherService {
         t.setHeadOf(teacher.getHeadOf());
         t.setMentorId(teacher.getMentorId());
         t.setRegistrations(teacher.getRegistrations());
+        t.setCourses(teacher.getCourses());
+        t.setExams(teacher.getExams());
         return teacherRepository.save(t);
     }
 
