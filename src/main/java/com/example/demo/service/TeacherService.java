@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.Teacher;
+import com.example.demo.entities.Teacher;
 import com.example.demo.repository.TeacherRepository;
 import org.springframework.stereotype.Service;
 

@@ -1,9 +1,8 @@
 package com.example.demo.service;
 
-import com.example.demo.Course;
+import com.example.demo.entities.Course;
 import com.example.demo.repository.CourseRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -33,13 +32,9 @@ public class CourseService {
         if (existingOpt.isPresent()) {
             Course existing = existingOpt.get();
             existing.setCourseName(updatedCourse.getCourseName());
-            existing.setCreatedAt(updatedCourse.getCreatedAt());
-            existing.setCreatedBy(updatedCourse.getCreatedBy());
-            existing.setLastModifiedAt(updatedCourse.getLastModifiedAt());
-            existing.setLastModifiedBy(updatedCourse.getLastModifiedBy());
             existing.setTeacher(updatedCourse.getTeacher());
             existing.setGradeLevel(updatedCourse.getGradeLevel());
-            // You can also update exams if needed
+           
             return courseRepository.save(existing);
         }
         return null;
@@ -47,5 +42,17 @@ public class CourseService {
 
     public void deleteCourse(Long id) {
         courseRepository.deleteById(id);
+    }
+    
+    public List<Course> getCoursesByTeacherId(Long teacherId) {
+        return courseRepository.findByTeacherId(teacherId);
+    }
+
+    public List<Course> getCoursesByGradeLevelId(Long gradeLevelId) {
+        return courseRepository.findByGradeLevelId(gradeLevelId);
+    }
+
+    public List<Course> searchByCourseName(String courseName) {
+        return courseRepository.findByCourseNameContainingIgnoreCase(courseName);
     }
 }

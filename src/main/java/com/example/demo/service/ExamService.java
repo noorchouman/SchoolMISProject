@@ -1,9 +1,15 @@
 package com.example.demo.service;
 
-import com.example.demo.Exam;
+import com.example.demo.entities.Exam;
 import com.example.demo.repository.ExamRepository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,10 +26,10 @@ public class ExamService {
         return examRepository.save(exam);
     }
 
-    public List<Exam> getAllExams() {
-        return examRepository.findAll();
+    public Page<Exam> getAllExams(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        return examRepository.findAll(pageable);
     }
-
     public Exam getExamById(Long id) {
         return examRepository.findById(id).orElse(null);
     }
@@ -33,9 +39,6 @@ public class ExamService {
         if (existingOpt.isPresent()) {
             Exam existing = existingOpt.get();
             existing.setCourseName(updatedExam.getCourseName());
-            existing.setCreatedAt(updatedExam.getCreatedAt());
-            existing.setCreatedBy(updatedExam.getCreatedBy());
-            
             existing.setTeacher(updatedExam.getTeacher());
             existing.setCourse(updatedExam.getCourse());
             
@@ -47,4 +50,12 @@ public class ExamService {
     public void deleteExam(Long id) {
         examRepository.deleteById(id);
     }
+    public List<Exam> getExamsByCourseId(Long courseId) {
+        return examRepository.findByCourseId(courseId);
+    }
+    public Page<Exam> getExamsAfterDate(LocalDateTime date, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        return examRepository.findByAuditCreatedDateAfter(date, pageable);
+    }
+    
 }

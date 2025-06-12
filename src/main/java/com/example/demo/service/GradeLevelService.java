@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.GradeLevel;
+import com.example.demo.entities.GradeLevel;
 import com.example.demo.repository.GradeLevelRepository;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +36,7 @@ public class GradeLevelService {
             existing.setName(updatedGradeLevel.getName());
             existing.setCourses(updatedGradeLevel.getCourses());
             existing.setStudents(updatedGradeLevel.getStudents());
-            existing.setRegistration(updatedGradeLevel.getRegistration());
+            existing.setRegistrations(updatedGradeLevel.getRegistrations());
             return gradeLevelRepository.save(existing);
         }
         return null;
@@ -45,4 +45,8 @@ public class GradeLevelService {
     public void deleteGradeLevel(Long id) {
         gradeLevelRepository.deleteById(id);
     }
+    public List<GradeLevel> searchByName(String namePart) {
+        return gradeLevelRepository.findByNameContainingIgnoreCase(namePart);
+    }
+
 }

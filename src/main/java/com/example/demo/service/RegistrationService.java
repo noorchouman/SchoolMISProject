@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.Registration;
+import com.example.demo.entities.Registration;
 import com.example.demo.repository.RegistrationRepository;
 import org.springframework.stereotype.Service;
 

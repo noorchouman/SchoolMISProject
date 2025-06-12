@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.Course;
+import com.example.demo.entities.Course;
 import com.example.demo.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -34,4 +34,19 @@ public class CourseController {
     public void deleteCourse(@PathVariable Long id) {
         courseService.deleteCourse(id);
     }
+    @GetMapping("/teacher/{teacherId}")
+    public List<Course> getCoursesByTeacher(@PathVariable Long teacherId) {
+        return courseService.getCoursesByTeacherId(teacherId);
+    }
+
+    @GetMapping("/gradeLevel/{gradeLevelId}")
+    public List<Course> getCoursesByGradeLevel(@PathVariable Long gradeLevelId) {
+        return courseService.getCoursesByGradeLevelId(gradeLevelId);
+    }
+
+    @GetMapping("/search")
+    public List<Course> searchCourses(@RequestParam String name) {
+        return courseService.searchByCourseName(name);
+    }
+
 }

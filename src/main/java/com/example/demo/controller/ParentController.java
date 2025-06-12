@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.Parent;
+import com.example.demo.entities.Parent;
 import com.example.demo.service.ParentService;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.Result;
+import com.example.demo.entities.Result;
 import com.example.demo.repository.ResultRepository;
+import com.example.demo.repository.TeacherRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +12,11 @@ import java.util.List;
 @Service
 public class ResultService {
 
-    @Autowired
-    private ResultRepository resultRepository;
-
+    private final ResultRepository resultRepository;
+ 
+    public ResultService(ResultRepository resultRepository) {
+        this.resultRepository = resultRepository;
+    }
     public Result saveResult(Result result) {
         return resultRepository.save(result);
     }
@@ -35,5 +39,20 @@ public class ResultService {
     }
     public void deleteResult(Long id) {
         resultRepository.deleteById(id);
+    }
+    
+    public List<Result> getResultsByStudentId(Long studentId) {
+        return resultRepository.findByStudentId(studentId);
+    }
+
+    public List<Result> getResultsByExamId(Long examId) {
+        return resultRepository.findByExamId(examId);
+    }
+
+    public List<Result> getResultsByMinScore(Double minScore) {
+        return resultRepository.findByScoreGreaterThanEqual(minScore);
+    }
+    public List<Object[]> getAverageScoreGroupedByGradeLetter() {
+        return resultRepository.findAverageScoreGroupedByGradeLetter();
     }
 }

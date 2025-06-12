@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.Parent;
+import com.example.demo.entities.Parent;
 import com.example.demo.repository.ParentRepository;
 import org.springframework.stereotype.Service;
 

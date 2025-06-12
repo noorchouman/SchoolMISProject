@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.Registration;
+import com.example.demo.entities.Registration;
 import com.example.demo.service.RegistrationService;
 
 import org.springframework.beans.factory.annotation.Autowired;

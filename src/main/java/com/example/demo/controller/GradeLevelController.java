@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.GradeLevel;
+import com.example.demo.entities.GradeLevel;
 import com.example.demo.service.GradeLevelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,5 +33,9 @@ public class GradeLevelController {
     @DeleteMapping("/{id}")
     public void deleteGradeLevel(@PathVariable Long id) {
         gradeLevelService.deleteGradeLevel(id);
+    }
+    @GetMapping("/search")
+    public List<GradeLevel> searchByName(@RequestParam String name) {
+        return gradeLevelService.searchByName(name);
     }
 }
