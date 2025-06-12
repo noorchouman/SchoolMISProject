@@ -1,6 +1,8 @@
 package com.example.demo.entities;
 import java.io.Serial;
 import java.io.Serializable;
+
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -8,7 +10,6 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-
 public class Result extends Auditable implements Serializable{
 	@Serial
 	private static final long serialVersionUID = 1L;

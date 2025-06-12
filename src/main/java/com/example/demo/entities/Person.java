@@ -2,6 +2,8 @@ package com.example.demo.entities;
 
 import java.io.Serial;
 import java.io.Serializable;
+
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

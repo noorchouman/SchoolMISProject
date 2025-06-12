@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Set;
+
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity

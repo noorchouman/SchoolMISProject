@@ -2,6 +2,7 @@ package com.example.demo.entities;
 
 import java.io.Serial;
 import java.util.Set;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
