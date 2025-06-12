@@ -2,9 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.entities.Result;
 import com.example.demo.repository.ResultRepository;
-import com.example.demo.repository.TeacherRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

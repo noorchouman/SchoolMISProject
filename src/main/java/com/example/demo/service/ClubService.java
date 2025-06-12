@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.entities.Club;
 import com.example.demo.repository.ClubRepository;
-import com.example.demo.repository.TeacherRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
