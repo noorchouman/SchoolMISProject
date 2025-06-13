@@ -60,10 +60,13 @@ public class projectMISApplication {
 	        TeacherRepository teacherRepo
 	) {
 	    return args -> {
-	        // Grade Levels
-	        GradeLevel grade1 = gradeLevelRepo.save(GradeLevel.builder().level(1).name("Grade 1").build());
+	        // 1. Grade Level
+	        GradeLevel grade1 = new GradeLevel();
+	        grade1.setLevel(1);
+	        grade1.setName("Grade 1");
+	        grade1 = gradeLevelRepo.save(grade1);
 
-	        // Staff
+	        // 2. Staff
 	        Staff staff = new Staff();
 	        staff.setName("Alice Admin");
 	        staff.setAddress("Admin Street");
@@ -71,15 +74,17 @@ public class projectMISApplication {
 	        staff.setRole("Registrar");
 	        staff = staffRepo.save(staff);
 
-	        // Department
+	        // 3. Department, with staff as head
 	        Department department = new Department();
 	        department.setName("Science");
 	        department.setHead(staff);
-	        department=departmentRepo.save(department);
-	        staff.setDepartment(department);
-	        staff=staffRepo.save(staff);
+	        department = departmentRepo.save(department);
 
-	        // Teacher
+	        // Link staff back to department
+	        staff.setDepartment(department);
+	        staff = staffRepo.save(staff);
+
+	        // 4. Teacher (belongs to department)
 	        Teacher teacher = new Teacher();
 	        teacher.setName("John Doe");
 	        teacher.setAddress("Teacher Avenue");
@@ -87,70 +92,77 @@ public class projectMISApplication {
 	        teacher.setRole("Science Teacher");
 	        teacher.setSubject("Biology");
 	        teacher.setDepartment(department);
-	        teacherRepo.save(teacher);
+	        teacher = teacherRepo.save(teacher);
 
-	        // Course
+	        // 5. Course (with teacher, gradeLevel)
 	        Course course = new Course();
 	        course.setCourseName("Intro to Biology");
 	        course.setTeacher(teacher);
 	        course.setGradeLevel(grade1);
-	        courseRepo.save(course);
+	        course = courseRepo.save(course);
 
-	        // Exam
+	        // 6. Exam (with course, teacher)
 	        Exam exam = new Exam();
 	        exam.setCourse(course);
 	        exam.setTeacher(teacher);
 	        exam.setCourseName("Midterm Biology");
-	        examRepo.save(exam);
+	        exam = examRepo.save(exam);
 
-	        // Parent
+	        // 7. Parent
 	        Parent parent = new Parent();
 	        parent.setName("Sarah Parent");
 	        parent.setAddress("Parent Rd");
 	        parent.setPhoneNumber("123456789");
-	        parentRepo.save(parent);
+	        parent = parentRepo.save(parent);
 
-	        // Student
+	        // 8. Student (with gradeLevel)
 	        Student student = new Student();
 	        student.setName("Tommy Student");
 	        student.setAddress("Student Lane");
 	        student.setClassroomId("C1");
 	        student.setGradeLevel(grade1);
-	        studentRepo.save(student);
+	        student = studentRepo.save(student);
 
-	        // Club
+	        // 9. Club (no members yet)
 	        Club club = new Club();
 	        club.setName("Science Club");
-	        clubRepo.save(club);
+	        club = clubRepo.save(club);
+
+	        // Now set up club membership (student joins club)
 	        club.setMembers(Set.of(student));
 	        club = clubRepo.save(club);
+
+	        // Student joins club
 	        student.setClubs(Set.of(club));
-	        studentRepo.save(student);
+	        student = studentRepo.save(student);
 
-	        // Parent-Student relationship
+	        // 10. Parent-Student relationship
 	        parent.setChildren(List.of(student));
-	        parentRepo.save(parent);
-	        student.setParents(Set.of(parent));
-	        studentRepo.save(student);
+	        parent = parentRepo.save(parent);
 
-	        // Registration
+	        student.setParents(Set.of(parent));
+	        student = studentRepo.save(student);
+
+	        // 11. Registration (ties student, staff, parent, gradeLevel)
 	        Registration reg = new Registration();
 	        reg.setStudent(student);
 	        reg.setStaff(staff);
 	        reg.setParent(parent);
 	        reg.setGradeLevel(grade1);
-	        registrationRepo.save(reg);
+	        reg = registrationRepo.save(reg);
 
-	        // Result
+	        // 12. Result (ties student, exam)
 	        Result result = new Result();
 	        result.setStudent(student);
 	        result.setExam(exam);
 	        result.setScore(88.5);
 	        result.setGradeLetter("B+");
-	        resultRepo.save(result);
+	        result = resultRepo.save(result);
 
+	        // Attach result to exam (optional, for bi-directional)
 	        exam.setResult(result);
-	        examRepo.save(exam);
+	        exam = examRepo.save(exam);
 	    };
 	}
+
 }

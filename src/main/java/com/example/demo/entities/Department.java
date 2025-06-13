@@ -12,9 +12,8 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 public class Department extends Auditable implements Serializable {
-	@Serial
-	private static final long serialVersionUID = 1L;
-	
+    @Serial
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,11 +21,11 @@ public class Department extends Auditable implements Serializable {
     private String name;
 
     @OneToMany(mappedBy = "department")
+    @EqualsAndHashCode.Exclude
     private Set<Staff> staffs;
 
     @OneToOne
+    @EqualsAndHashCode.Exclude
     private Staff head;
-
-   
 }
 
