@@ -83,9 +83,11 @@ public class projectMISApplication {
 	        department=departmentRepo.save(department);
 	        staff.setDepartment(department);
 	        staffRepo.save(staff);
+
 	        // Link staff back to department
 	        staff.setDepartment(department);
 	        staff = staffRepo.save(staff);
+
 
 	        // 4. Teacher (belongs to department)
 	        Teacher teacher = new Teacher();
