@@ -80,6 +80,9 @@ public class projectMISApplication {
 	        department.setHead(staff);
 	        department = departmentRepo.save(department);
 
+	        department=departmentRepo.save(department);
+	        staff.setDepartment(department);
+	        staffRepo.save(staff);
 	        // Link staff back to department
 	        staff.setDepartment(department);
 	        staff = staffRepo.save(staff);
