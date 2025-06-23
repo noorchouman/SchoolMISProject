@@ -1,11 +1,11 @@
 package com.example.demo.entities;
 
-import java.io.Serial;
-import java.util.Set;
-
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import java.io.Serial;
+import java.util.Set;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -18,15 +18,18 @@ public class Staff extends Person {
     private Long salary;
     private String role;
 
-    @ManyToOne
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @ManyToOne
     private Department department;
 
-    @OneToOne(mappedBy = "head")
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToOne(mappedBy = "head")
     private Department headOf;
 
-    @OneToMany(mappedBy = "staff")
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(mappedBy = "staff")
     private Set<Registration> registrations;
 }

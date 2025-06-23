@@ -1,21 +1,30 @@
 package com.example.demo.service;
 
 import com.example.demo.entities.Club;
+import com.example.demo.entities.Student;
 import com.example.demo.repository.ClubRepository;
+import com.example.demo.repository.StudentRepository;
+
+import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ClubService {
 
-    @Autowired
+	@Autowired
     private final ClubRepository clubRepository;
     
-    public ClubService(ClubRepository clubRepository) {
+    private final StudentRepository studentRepository;
+
+    
+    public ClubService(ClubRepository clubRepository, StudentRepository studentRepository) {
         this.clubRepository = clubRepository;
+        this.studentRepository = studentRepository;
     }
 
 
@@ -41,8 +50,20 @@ public class ClubService {
         return null;
     }
 
+    @Transactional
     public void deleteClub(Long id) {
-        clubRepository.deleteById(id);
+        Club club = clubRepository.findById(id).orElse(null);
+        if (club != null && club.getMembers() != null) {
+            
+            List<Student> students = new ArrayList<>(club.getMembers());
+            for (Student student : students) {
+                student.getClubs().remove(club);
+                studentRepository.save(student);
+            }
+            club.getMembers().clear();
+            clubRepository.save(club); 
+            clubRepository.delete(club);
+        }
     }
     public List<Club> searchClubsByName(String name) {
         return clubRepository.findByNameContainingIgnoreCase(name);

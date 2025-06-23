@@ -42,7 +42,7 @@ class ClubControllerTest {
 		        .andExpect(status().isOk())
 		        .andExpect(jsonPath("$.name").value("Chess Club"));
 
-		// Retrieve
+		
 		mockMvc
 		        .perform(get("/clubs"))
 		        .andExpect(status().isOk())
