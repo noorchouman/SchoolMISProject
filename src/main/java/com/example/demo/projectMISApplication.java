@@ -32,8 +32,10 @@ import com.example.demo.repository.StaffRepository;
 import com.example.demo.repository.StudentRepository;
 import com.example.demo.repository.TeacherRepository;
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 @SpringBootApplication
 public class projectMISApplication {
 
@@ -43,7 +45,13 @@ public class projectMISApplication {
 	@Bean
 	OpenAPI springOpenAPI() {
 		return new OpenAPI()
-				.info(new Info().title("Correspondence Service").description("Correspondence MGMT Service API").version("v1.0.0"));
+				.info(new Info().title("School System").description("School MGMT System API").version("v1.0.0"))
+				.components(new Components()
+		            .addSecuritySchemes("bearerAuth",
+		                new SecurityScheme()
+		                    .type(SecurityScheme.Type.HTTP)
+		                    .scheme("bearer")
+		                    .bearerFormat("JWT")));
 	}
 	@Bean
 	CommandLineRunner seedData(

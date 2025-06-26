@@ -3,11 +3,11 @@ package com.example.demo.controller;
 import com.example.demo.entities.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.JwtUtil;
+
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.*;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +47,8 @@ public class AuthController {
         response.put("token", token);
         return response;
     }
-
+    
+    @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/login/info")
     public Map<String, String> getUserInfo(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.substring(7); // remove "Bearer "
