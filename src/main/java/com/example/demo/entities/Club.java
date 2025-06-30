@@ -23,6 +23,6 @@ public class Club extends Auditable implements Serializable {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @ManyToMany(mappedBy = "clubs")
+    @ManyToMany(mappedBy = "clubs", cascade = CascadeType.ALL)
     private Set<Student> members;
 }
